@@ -2,7 +2,7 @@
 
 # build-tools
 , bootPkgs
-, autoconf, automake, coreutils, fetchpatch, fetchurl, perl, python3, m4, sphinx
+, autoconf, automake, coreutils, fetchpatch, fetchurl, perl, python3, m4, sphinx, xattr
 , bash
 
 , libiconv ? null, ncurses
@@ -149,6 +149,9 @@ stdenv.mkDerivation (rec {
     export NIX_LDFLAGS+=" -rpath $out/lib/ghc-${version}"
   '' + lib.optionalString stdenv.isDarwin ''
     export NIX_LDFLAGS+=" -no_dtrace_dof"
+
+    # GHC tries the host xattr /usr/bin/xattr by default which fails since it expects python to be 2.7
+    export XATTR=${lib.getBin xattr}/bin/xattr
   '' + lib.optionalString targetPlatform.useAndroidPrebuilt ''
     sed -i -e '5i ,("armv7a-unknown-linux-androideabi", ("e-m:e-p:32:32-i64:64-v128:64:128-a:0:32-n32-S64", "cortex-a8", ""))' llvm-targets
   '' + lib.optionalString targetPlatform.isMusl ''
