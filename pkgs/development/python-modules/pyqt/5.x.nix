@@ -17,6 +17,7 @@
 , withWebKit ? false
 , withWebSockets ? false
 , withLocation ? false
+, withSip4 ? false
 }:
 
 buildPythonPackage rec {
@@ -37,7 +38,7 @@ buildPythonPackage rec {
     ./pyqt5-fix-dbus-mainloop-support.patch
     # confirm license when installing via pyqt5_sip
     ./pyqt5-confirm-license.patch
-  ];
+  ] ++ lib.optional withSip4 ./pyqt5-sip4.patch;
 
   postPatch =
   # be more verbose
