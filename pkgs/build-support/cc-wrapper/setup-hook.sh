@@ -70,6 +70,10 @@ ccWrapper_addCVars () {
 
     if [ -d "$1/include" ]; then
         export NIX_CFLAGS_COMPILE${role_post}+=" -isystem $1/include"
+
+        if [ -d "$1/include/c++/v1" ]; then
+            export NIX_CFLAGS_COMPILE${role_post}+=" -isystem $1/include/c++/v1"
+        fi
     fi
 
     if [ -d "$1/Library/Frameworks" ]; then
